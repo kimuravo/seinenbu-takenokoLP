@@ -1,5 +1,18 @@
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+document.querySelectorAll("[data-gtm-event]").forEach((element) => {
+  element.addEventListener("click", () => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: element.dataset.gtmEvent,
+      event_category: "lp_cta",
+      event_label: element.dataset.gtmLabel || "",
+      link_url: element.href || "",
+      link_text: element.textContent.trim(),
+    });
+  });
+});
+
 if (window.gsap && window.ScrollTrigger && !prefersReducedMotion) {
   document.body.classList.add("is-animating");
   gsap.registerPlugin(ScrollTrigger);
