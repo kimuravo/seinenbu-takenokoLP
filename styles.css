@@ -528,11 +528,11 @@ h3 {
 .chatbot {
   position: fixed;
   right: clamp(14px, 3vw, 30px);
-  bottom: clamp(14px, 3vw, 30px);
+  bottom: clamp(18px, 3vw, 34px);
   z-index: 20;
   font-family: var(--sans);
   line-height: 1.5;
-  contain: layout paint style;
+  isolation: isolate;
 }
 
 .chatbot,
@@ -553,10 +553,11 @@ h3 {
 .chatbot__launcher {
   position: relative;
   width: 118px;
-  min-height: 132px;
-  padding: 0 0 12px;
+  min-height: 164px;
+  padding: 8px 0 12px;
   display: grid;
   justify-items: center;
+  align-content: end;
   gap: 2px;
   border: 0;
   border-radius: 999px 999px 16px 16px;
@@ -572,7 +573,7 @@ h3 {
   width: 102px;
   height: 124px;
   object-fit: contain;
-  margin-top: -42px;
+  margin-top: 0;
   filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.16));
 }
 
@@ -814,12 +815,12 @@ h3 {
 
   .chatbot__launcher {
     width: 102px;
-    min-height: 118px;
+    min-height: 144px;
   }
 
   .chatbot__launcher img {
     width: 86px;
     height: 106px;
-    margin-top: -36px;
+    margin-top: 0;
   }
 }
