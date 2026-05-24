@@ -13,6 +13,95 @@ document.querySelectorAll("[data-gtm-event]").forEach((element) => {
   });
 });
 
+const chatbot = document.querySelector(".chatbot");
+const chatbotLauncher = document.querySelector(".chatbot__launcher");
+const chatbotPanel = document.querySelector(".chatbot__panel");
+const chatbotClose = document.querySelector(".chatbot__close");
+const chatbotMessages = document.querySelector(".chatbot__messages");
+const chatbotForm = document.querySelector(".chatbot__form");
+const chatbotInput = chatbotForm?.querySelector("input");
+
+const chatbotAnswers = [
+  {
+    keys: ["食べ", "レシピ", "おすすめ", "料理"],
+    answer: "おすすめは、しっかり冷やした「冷やしたけのこ」です。木の芽味噌、塩、オリーブオイルで、香りと甘みをそのまま楽しめます。",
+  },
+  {
+    keys: ["買", "販売", "場所", "どこ", "アクセス"],
+    answer: "道の駅や山城地域の直売所で販売しています。時期や在庫は変わるため、SNSでの確認がおすすめです。",
+  },
+  {
+    keys: ["保存", "日持ち", "保管"],
+    answer: "下ゆでした後、水に浸して冷蔵保存してください。水は毎日替え、できれば2〜3日以内に食べるのがおすすめです。",
+  },
+  {
+    keys: ["えぐみ", "下処理", "あく", "アク"],
+    answer: "えぐみを抑えるには、鮮度が大切です。購入後は早めに下ゆでし、冷ましてから水に浸して保存してください。",
+  },
+];
+
+function pushChatbotEvent(event, label = "") {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event,
+    event_category: "lp_chatbot",
+    event_label: label,
+  });
+}
+
+function addChatMessage(text, type) {
+  if (!chatbotMessages) return;
+  const message = document.createElement("div");
+  message.className = `chatbot__message chatbot__message--${type}`;
+  message.textContent = text;
+  chatbotMessages.appendChild(message);
+  chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+}
+
+function getChatbotAnswer(text) {
+  const matched = chatbotAnswers.find((item) => item.keys.some((key) => text.includes(key)));
+  if (matched) return matched.answer;
+  return "ありがとうございます。たけのこの食べ方・販売場所・保存方法について案内できます。詳しい在庫や販売日はSNSでの確認がおすすめです。";
+}
+
+function openChatbot() {
+  if (!chatbot || !chatbotPanel || !chatbotLauncher) return;
+  chatbot.classList.add("is-open");
+  chatbotPanel.hidden = false;
+  chatbotLauncher.setAttribute("aria-expanded", "true");
+  chatbotInput?.focus();
+  pushChatbotEvent("open_chatbot", "launcher");
+}
+
+function closeChatbot() {
+  if (!chatbot || !chatbotPanel || !chatbotLauncher) return;
+  chatbot.classList.remove("is-open");
+  chatbotPanel.hidden = true;
+  chatbotLauncher.setAttribute("aria-expanded", "false");
+}
+
+chatbotLauncher?.addEventListener("click", openChatbot);
+chatbotClose?.addEventListener("click", closeChatbot);
+
+document.querySelectorAll("[data-chat-question]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const question = button.dataset.chatQuestion || "";
+    addChatMessage(question, "user");
+    addChatMessage(getChatbotAnswer(question), "bot");
+    pushChatbotEvent("chatbot_quick_question", question);
+  });
+});
+
+chatbotForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const text = chatbotInput?.value.trim() || "";
+  if (!text) return;
+  addChatMessage(text, "user");
+  chatbotInput.value = "";
+  addChatMessage(getChatbotAnswer(text), "bot");
+  pushChatbotEvent("chatbot_submit_question", text.slice(0, 60));
+});
+
 if (window.gsap && window.ScrollTrigger && !prefersReducedMotion) {
   document.body.classList.add("is-animating");
   gsap.registerPlugin(ScrollTrigger);

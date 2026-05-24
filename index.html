@@ -173,6 +173,37 @@
       </div>
     </footer>
 
+    <aside class="chatbot" aria-label="山城たけのこ相談チャット">
+      <button class="chatbot__launcher" type="button" aria-expanded="false" aria-controls="chatbot-panel" data-gtm-event="click_chatbot_open" data-gtm-label="chatbot_launcher">
+        <img src="assets/images/takenoko-character.png" alt="たけのこ案内キャラクター">
+        <span>相談する</span>
+      </button>
+      <section class="chatbot__panel" id="chatbot-panel" hidden>
+        <div class="chatbot__header">
+          <img src="assets/images/takenoko-character.png" alt="">
+          <div>
+            <p>山城たけのこ案内</p>
+            <strong>旬・食べ方・販売場所を案内します</strong>
+          </div>
+          <button class="chatbot__close" type="button" aria-label="チャットを閉じる">×</button>
+        </div>
+        <div class="chatbot__messages" role="log" aria-live="polite">
+          <div class="chatbot__message chatbot__message--bot">
+            こんにちは。山城たけのこの食べ方や販売場所について、気軽に聞いてください。
+          </div>
+        </div>
+        <div class="chatbot__chips" aria-label="質問例">
+          <button type="button" data-chat-question="おすすめの食べ方は？">食べ方</button>
+          <button type="button" data-chat-question="どこで買えますか？">販売場所</button>
+          <button type="button" data-chat-question="保存方法を教えて">保存方法</button>
+        </div>
+        <form class="chatbot__form">
+          <input type="text" name="message" autocomplete="off" placeholder="質問を入力">
+          <button type="submit">送信</button>
+        </form>
+      </section>
+    </aside>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
     <script src="script.js"></script>
